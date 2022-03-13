@@ -3,17 +3,18 @@ from unittest import TestCase
 
 import numpy as np
 import pydicom
+
 from dicom_parser.header import Header
 from dicom_parser.image import Image
 from dicom_parser.utils.multi_frame.multi_frame import MultiFrame
 from dicom_parser.utils.siemens.mosaic import Mosaic
-
 from tests.fixtures import (TEST_IMAGE_PATH, TEST_IMAGE_RELATIVE_PATH,
                             TEST_MULTIFRAME, TEST_RSFMRI_IMAGE_PATH,
                             TEST_SIEMENS_DWI_PATH)
 
 
 class ImageTestCase(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.rsfmri_image = Image(TEST_RSFMRI_IMAGE_PATH)
@@ -61,14 +62,12 @@ class ImageTestCase(TestCase):
 
     def test_affine(self):
         value = self.image.affine
-        expected = np.array(
-            [
-                [0.0, 0.0, 6.0, -39.60532761],
-                [0.0, 0.48828125, -0.0, -148.57835579],
-                [-0.48828125, 0.0, 0.0, 94.53372765],
-                [0.0, 0.0, 0.0, 1.0],
-            ]
-        )
+        expected = np.array([
+            [0.0, 0.0, 6.0, -39.60532761],
+            [0.0, 0.48828125, -0.0, -148.57835579],
+            [-0.48828125, 0.0, 0.0, 94.53372765],
+            [0.0, 0.0, 0.0, 1.0],
+        ])
         self.assertTrue(np.allclose(value, expected))
 
     def test_affine_with_missing(self):
@@ -149,13 +148,11 @@ class ImageTestCase(TestCase):
 
     def test_mosaic_image_orientation_patient(self):
         value = self.siemens_dwi.image_orientation_patient
-        expected = np.array(
-            [
-                [-3.41585276e-02, 3.14874388e-02],
-                [9.99416427e-01, 1.07615111e-03],
-                [-4.14689430e-08, -9.99503568e-01],
-            ]
-        )
+        expected = np.array([
+            [-3.41585276e-02, 3.14874388e-02],
+            [9.99416427e-01, 1.07615111e-03],
+            [-4.14689430e-08, -9.99503568e-01],
+        ])
         self.assertTrue(np.allclose(value, expected))
 
     def test_slice_normal(self):
@@ -206,13 +203,11 @@ class ImageTestCase(TestCase):
 
     def test_voxel_space_b_matrix(self):
         value = self.siemens_dwi.voxel_space_b_matrix
-        expected = np.array(
-            [
-                [0.93497292, -0.93334641, -1.02937305],
-                [-0.93334641, 0.93172273, 1.02758232],
-                [-1.02937305, 1.02758232, 1.13330435],
-            ]
-        )
+        expected = np.array([
+            [0.93497292, -0.93334641, -1.02937305],
+            [-0.93334641, 0.93172273, 1.02758232],
+            [-1.02937305, 1.02758232, 1.13330435],
+        ])
         self.assertTrue(np.allclose(value, expected))
 
     def test_voxel_space_b_matrix_with_missing(self):

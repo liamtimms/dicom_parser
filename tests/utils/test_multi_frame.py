@@ -14,6 +14,7 @@ TODO
 from unittest import TestCase
 
 import numpy as np
+
 from dicom_parser.image import Image
 from dicom_parser.utils.exceptions import DicomParsingError
 from dicom_parser.utils.multi_frame import MultiFrame
@@ -21,6 +22,7 @@ from tests.fixtures import TEST_IMAGE_PATH, TEST_MULTIFRAME
 
 
 class MultiFrameTestCase(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.image = Image(TEST_MULTIFRAME)
@@ -109,14 +111,12 @@ class MultiFrameTestCase(TestCase):
         mf = MultiFrame(self.image._data, self.image.header)
         shared_group = mf.shared_functional_groups
         original_value = shared_group.frame_header.raw[
-            "PixelMeasuresSequence"
-        ].value
+            "PixelMeasuresSequence"].value
         shared_group.frame_header.raw["PixelMeasuresSequence"].value = None
         with self.assertRaises(DicomParsingError):
             mf.get_pixel_measures()
         shared_group.frame_header.raw[
-            "PixelMeasuresSequence"
-        ].value = original_value
+            "PixelMeasuresSequence"].value = original_value
 
     def test_missing_index_without_content_group_raises_error(self):
         # Frame index only exists within the "per frame" sequence in the sample
@@ -182,8 +182,7 @@ class MultiFrameTestCase(TestCase):
         mf = MultiFrame(self.image._data, self.image.header)
         shared_group = mf.shared_functional_groups
         del shared_group.frame_header["PlaneOrientationSequence"][0].raw[
-            "ImageOrientationPatient"
-        ]
+            "ImageOrientationPatient"]
         with self.assertRaises(DicomParsingError):
             mf.get_image_orientation_patient()
 
@@ -191,44 +190,36 @@ class MultiFrameTestCase(TestCase):
         mf = MultiFrame(self.image._data, self.image.header)
         shared_group = mf.shared_functional_groups
         original_value = shared_group.frame_header["PixelMeasuresSequence"][
-            0
-        ].raw["PixelSpacing"]
+            0].raw["PixelSpacing"]
         del shared_group.frame_header["PixelMeasuresSequence"][0].raw[
-            "PixelSpacing"
-        ]
+            "PixelSpacing"]
         with self.assertRaises(DicomParsingError):
             mf.get_voxel_sizes()
         shared_group.frame_header["PixelMeasuresSequence"][0].raw[
-            "PixelSpacing"
-        ] = original_value
+            "PixelSpacing"] = original_value
 
     def test_missing_slice_thickness_raises_error(self):
         mf = MultiFrame(self.image._data, self.image.header)
         shared_group = mf.shared_functional_groups
         original_value = shared_group.frame_header["PixelMeasuresSequence"][
-            0
-        ].raw["SliceThickness"]
+            0].raw["SliceThickness"]
         del shared_group.frame_header["PixelMeasuresSequence"][0].raw[
-            "SliceThickness"
-        ]
+            "SliceThickness"]
         with self.assertRaises(DicomParsingError):
             mf.get_voxel_sizes()
         shared_group.frame_header["PixelMeasuresSequence"][0].raw[
-            "SliceThickness"
-        ] = original_value
+            "SliceThickness"] = original_value
 
     def test_missing_image_position_patient_raises_error(self):
         mf = MultiFrame(self.image._data, self.image.header)
         header = mf.sample_sequence.frame_header
         original_value = header["PlanePositionSequence"][0].raw[
-            "ImagePositionPatient"
-        ]
+            "ImagePositionPatient"]
         del header["PlanePositionSequence"][0].raw["ImagePositionPatient"]
         with self.assertRaises(DicomParsingError):
             mf.get_image_position()
         header["PlanePositionSequence"][0].raw[
-            "ImagePositionPatient"
-        ] = original_value
+            "ImagePositionPatient"] = original_value
 
     def test_property_caching(self):
         self.assertIs(
@@ -239,28 +230,23 @@ class MultiFrameTestCase(TestCase):
             self.multi_frame.shared_functional_groups,
             self.multi_frame._shared_functional_groups,
         )
-        self.assertIs(
-            self.multi_frame.frame_indices, self.multi_frame._frame_indices
-        )
+        self.assertIs(self.multi_frame.frame_indices,
+                      self.multi_frame._frame_indices)
         self.assertIs(self.multi_frame.stack_ids, self.multi_frame._stack_ids)
         self.assertIs(self.multi_frame.stack_ids, self.multi_frame._stack_ids)
         self.assertIs(
             self.multi_frame.image_orientation_patient,
             self.multi_frame._image_orientation_patient,
         )
-        self.assertIs(
-            self.multi_frame.image_position, self.multi_frame._image_position
-        )
-        self.assertIs(
-            self.multi_frame.image_shape, self.multi_frame._image_shape
-        )
+        self.assertIs(self.multi_frame.image_position,
+                      self.multi_frame._image_position)
+        self.assertIs(self.multi_frame.image_shape,
+                      self.multi_frame._image_shape)
         self.assertIs(self.multi_frame.n_frames, self.multi_frame._n_frames)
-        self.assertIs(
-            self.multi_frame.frame_indices, self.multi_frame._frame_indices
-        )
-        self.assertIs(
-            self.multi_frame.voxel_sizes, self.multi_frame._voxel_sizes
-        )
+        self.assertIs(self.multi_frame.frame_indices,
+                      self.multi_frame._frame_indices)
+        self.assertIs(self.multi_frame.voxel_sizes,
+                      self.multi_frame._voxel_sizes)
         self.assertIs(
             self.multi_frame.dimension_index_pointers,
             self.multi_frame._dimension_index_pointers,

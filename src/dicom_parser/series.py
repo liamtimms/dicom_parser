@@ -8,11 +8,9 @@ import numpy as np
 
 from dicom_parser import messages
 from dicom_parser.image import Image
-from dicom_parser.messages import (
-    EMPTY_SERIES_DIRECTORY,
-    INVALID_INDEXING_OPERATOR,
-    INVALID_SERIES_DIRECTORY,
-)
+from dicom_parser.messages import (EMPTY_SERIES_DIRECTORY,
+                                   INVALID_INDEXING_OPERATOR,
+                                   INVALID_SERIES_DIRECTORY)
 from dicom_parser.utils.mime_generator import generate_by_mime
 from dicom_parser.utils.peek import peek
 
@@ -147,9 +145,8 @@ class Series:
         FileNotFoundError
             No DICOM images found under provided directory
         """
-        dcm_paths = (
-            generate_by_mime(self.path) if mime else self.path.rglob("*.dcm")
-        )
+        dcm_paths = (generate_by_mime(self.path)
+                     if mime else self.path.rglob("*.dcm"))
         # Use peek to convert dcm_paths to None if the generator is "empty"
         _, dcm_paths = peek(dcm_paths)
         if not dcm_paths:
@@ -171,10 +168,8 @@ class Series:
         """
         images = [Image(dcm_path) for dcm_path in self.get_dcm_paths(mime)]
         return tuple(
-            sorted(
-                images, key=lambda image: image.header.get("InstanceNumber")
-            )
-        )
+            sorted(images,
+                   key=lambda image: image.header.get("InstanceNumber")))
 
     def get(
         self,
@@ -216,8 +211,7 @@ class Series:
                 default=default,
                 parsed=parsed,
                 missing_ok=missing_ok,
-            )
-            for image in self.images
+            ) for image in self.images
         ]
         unique_values = set(values)
         return values if len(unique_values) > 1 else unique_values.pop()
@@ -265,9 +259,8 @@ class Series:
             Series 3D data
         """
         if not isinstance(self._data, np.ndarray):
-            self._data = np.stack(
-                [image.data for image in self.images], axis=-1
-            )
+            self._data = np.stack([image.data for image in self.images],
+                                  axis=-1)
         return self._data
 
     @property

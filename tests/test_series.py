@@ -2,20 +2,17 @@ from pathlib import Path
 from unittest import TestCase
 
 import numpy as np
+
 from dicom_parser.image import Image
 from dicom_parser.series import Series
-
-from tests.fixtures import (
-    SERIES_SPATIAL_RESOLUTION,
-    TEST_IMAGE_PATH,
-    TEST_RSFMRI_SERIES_PATH,
-    TEST_RSFMRI_SERIES_PIXEL_ARRAY,
-    TEST_SERIES_PATH,
-    TEST_UTILS_DIRECTORY,
-)
+from tests.fixtures import (SERIES_SPATIAL_RESOLUTION, TEST_IMAGE_PATH,
+                            TEST_RSFMRI_SERIES_PATH,
+                            TEST_RSFMRI_SERIES_PIXEL_ARRAY, TEST_SERIES_PATH,
+                            TEST_UTILS_DIRECTORY)
 
 
 class SeriesTestCase(TestCase):
+
     def setUp(self):
         self.localizer = Series(TEST_SERIES_PATH)
 
@@ -40,8 +37,7 @@ class SeriesTestCase(TestCase):
             Series("/some/invalid_path/at/nowhere")
 
     def test_initialization_with_no_dcms_in_path_raises_file_not_found_error(
-        self,
-    ):
+        self, ):
         with self.assertRaises(FileNotFoundError):
             Series(TEST_UTILS_DIRECTORY)
 
@@ -52,8 +48,7 @@ class SeriesTestCase(TestCase):
     def test_images_are_ordered_by_instance_number(self):
         series = Series(TEST_SERIES_PATH)
         instance_numbers = tuple(
-            [image.header.get("InstanceNumber") for image in series.images]
-        )
+            [image.header.get("InstanceNumber") for image in series.images])
         expected = tuple(range(1, 12))
         self.assertTupleEqual(instance_numbers, expected)
 

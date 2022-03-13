@@ -8,7 +8,6 @@ except ImportError:
 else:
     _has_pandas = True
 
-
 REQUIRES_PANDAS: str = """Pandas could not be imported!
 Please install pandas by running:
 
@@ -17,6 +16,7 @@ pip install dicom_parser[pandas]
 
 
 def requires_pandas(func: Callable) -> Callable:
+
     def check_pandas(*args, **kwargs):
         if not _has_pandas:
             raise ImportError(REQUIRES_PANDAS)

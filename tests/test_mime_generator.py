@@ -8,8 +8,8 @@ from typing import Generator
 from unittest import TestCase
 
 import pytest
-from dicom_parser.utils.mime_generator import check_magic, generate_by_mime
 
+from dicom_parser.utils.mime_generator import check_magic, generate_by_mime
 from tests.fixtures import TEST_MIME_SERIES_PATH
 
 #: Message to display for Linux and macOS tests.
@@ -23,7 +23,6 @@ RUNNING_ON_WINDOWS: bool = platform.system() == "Windows"
 
 #: Whether python-magic is installed or not.
 MAGIC = bool(importlib.util.find_spec("magic"))
-
 
 # TODO: Fix windows test. For some reason NotImplementedError isn't raised
 # when tested with GitHub Actions.

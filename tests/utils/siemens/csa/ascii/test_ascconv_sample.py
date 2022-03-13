@@ -6,14 +6,13 @@ import ast
 from collections import OrderedDict
 
 import pytest
-from dicom_parser.utils.siemens.csa.ascii.ascconv import (
-    AscconvParseError,
-    assign_to_atoms,
-    obj_from_atoms,
-    parse_ascconv,
-    parse_ascconv_text,
-)
 from numpy.testing import assert_array_almost_equal, assert_array_equal
+
+from dicom_parser.utils.siemens.csa.ascii.ascconv import (AscconvParseError,
+                                                          assign_to_atoms,
+                                                          obj_from_atoms,
+                                                          parse_ascconv,
+                                                          parse_ascconv_text)
 from tests.fixtures import TEST_ASCCONV_SAMPLE
 
 
@@ -26,8 +25,7 @@ def test_ascconv_parse():
     assert ascconv_dict["tProtocolName"] == "CBU+AF8-DTI+AF8-64D+AF8-1A"
     assert ascconv_dict["ucScanRegionPosValid"] == 1
     assert_array_almost_equal(
-        ascconv_dict["sProtConsistencyInfo"]["flNominalB0"], 2.89362
-    )
+        ascconv_dict["sProtConsistencyInfo"]["flNominalB0"], 2.89362)
     assert ascconv_dict["sProtConsistencyInfo"]["flGMax"] == 26
     assert list(ascconv_dict["sSliceArray"].keys()) == [
         "asSlice",
@@ -64,13 +62,11 @@ def test_ascconv_parse():
 
 
 def test_ascconv_w_attrs():
-    in_str = (
-        "### ASCCONV BEGIN object=MrProtDataImpl@MrProtocolData "
-        "version=41340006 "
-        "converter=%MEASCONST%/ConverterList/Prot_Converter.txt ###\n"
-        'test = "hello"\n'
-        "### ASCCONV END ###"
-    )
+    in_str = ("### ASCCONV BEGIN object=MrProtDataImpl@MrProtocolData "
+              "version=41340006 "
+              "converter=%MEASCONST%/ConverterList/Prot_Converter.txt ###\n"
+              'test = "hello"\n'
+              "### ASCCONV END ###")
     ascconv_dict, attrs = parse_ascconv(in_str, '""')
     assert attrs["object"] == "MrProtDataImpl@MrProtocolData"
     assert attrs["version"] == "41340006"
@@ -93,11 +89,8 @@ def atom_seq_same(seq1, seq2):
     if len(seq1) != len(seq2):
         return False
     for a1, a2 in zip(seq1, seq2):
-        if (
-            not isinstance(a1[0], type(a2[0]))
-            or a1[1] != a2[1]
-            or a1[2] != a2[2]
-        ):
+        if (not isinstance(a1[0], type(a2[0])) or a1[1] != a2[1]
+                or a1[2] != a2[2]):
             return False
     return True
 

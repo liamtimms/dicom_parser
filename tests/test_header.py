@@ -7,25 +7,17 @@ from pathlib import Path
 from unittest import TestCase
 
 import pydicom
+
 from dicom_parser.header import Header
 from dicom_parser.utils.requires_pandas import _has_pandas
 from dicom_parser.utils.sequence_detector import SequenceDetector
-from dicom_parser.utils.value_representation import (
-    ValueRepresentation,
-    ValueRepresentationError,
-)
+from dicom_parser.utils.value_representation import (ValueRepresentation,
+                                                     ValueRepresentationError)
 from dicom_parser.utils.vr_to_data_element import get_data_element_class
-
-from tests.fixtures import (
-    SERIES_INSTANCE_UID,
-    SOP_INSTANCE_UID,
-    STUDY_INSTANCE_UID,
-    TEST_FIELDS,
-    TEST_GE_LOCALIZER_PATH,
-    TEST_IMAGE_PATH,
-    TEST_RSFMRI_IMAGE_PATH,
-    TEST_SIEMENS_DWI_PATH,
-)
+from tests.fixtures import (SERIES_INSTANCE_UID, SOP_INSTANCE_UID,
+                            STUDY_INSTANCE_UID, TEST_FIELDS,
+                            TEST_GE_LOCALIZER_PATH, TEST_IMAGE_PATH,
+                            TEST_RSFMRI_IMAGE_PATH, TEST_SIEMENS_DWI_PATH)
 
 
 class HeaderTestCase(TestCase):
@@ -50,15 +42,17 @@ class HeaderTestCase(TestCase):
         (
             "0020",
             "000D",
-        ): "1.3.12.2.1107.5.2.43.66024.30000018050107081466900000007",
-        ("0008", "0060"): "MR",
+        ):
+        "1.3.12.2.1107.5.2.43.66024.30000018050107081466900000007",
+        ("0008", "0060"):
+        "MR",
         (
             "0020",
             "000E",
-        ): "1.3.12.2.1107.5.2.43.66024.2018050112250992296484473.0.0.0",
-        ("0028", "0030"): pydicom.multival.MultiValue(
-            float, ["0.48828125", "0.48828125"]
-        ),
+        ):
+        "1.3.12.2.1107.5.2.43.66024.2018050112250992296484473.0.0.0",
+        ("0028", "0030"):
+        pydicom.multival.MultiValue(float, ["0.48828125", "0.48828125"]),
     }
 
     #: Invalid tags.
@@ -75,7 +69,9 @@ class HeaderTestCase(TestCase):
         ["1"],
         1.1,
         False,
-        {"a": "b"},
+        {
+            "a": "b"
+        },
         {1, 2, 3},
         None,
     )
@@ -110,7 +106,7 @@ class HeaderTestCase(TestCase):
         self.assertIsInstance(header.raw, pydicom.FileDataset)
 
     def test_incorrect_raw_input_raises_type_error(self):
-        bad_inputs = 6, 4.2, ("/some/path",), ["/another/path"], None
+        bad_inputs = 6, 4.2, ("/some/path", ), ["/another/path"], None
         for bad_input in bad_inputs:
             with self.assertRaises(TypeError):
                 Header(bad_input)

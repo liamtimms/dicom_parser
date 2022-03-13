@@ -1,9 +1,8 @@
 """
 Definition of the :class:`FloatingPointDoubleTestCase` class.
 """
-from dicom_parser.data_elements.floating_point_double import (
-    FloatingPointDouble,
-)
+from dicom_parser.data_elements.floating_point_double import \
+    FloatingPointDouble
 from tests.test_data_element import DataElementTestCase
 
 

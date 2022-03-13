@@ -6,6 +6,7 @@ import os
 from datetime import date, time
 
 import numpy as np
+
 from dicom_parser.utils.value_representation import ValueRepresentation
 from tests.fixtures import TEST_FILES_PATH
 
@@ -127,14 +128,17 @@ with open(TEST_CSA_PATH, "rb") as f:
 
 #: Expected parsed values of various private Siemens elements.
 SIEMENS_DWI_ELEMENTS = {
-    (0x19, 0x100A): 9,
-    (0x19, 0x100B): 77000.0,
-    (0x19, 0x100C): 0,
+    (0x19, 0x100A):
+    9,
+    (0x19, 0x100B):
+    77000.0,
+    (0x19, 0x100C):
+    0,
     (0x19, 0x100E): [0.57735026, 0.57735038, 0.57735032],
-    (0x19, 0x1027): np.array(
-        [[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
-    ),
-    (0x19, 0x1028): 22.321,
+    (0x19, 0x1027):
+    np.array([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]),
+    (0x19, 0x1028):
+    22.321,
     (0x19, 0x1029): (
         0.0,
         1380.0,
@@ -146,11 +150,14 @@ SIEMENS_DWI_ELEMENTS = {
         2205.0,
         1102.5,
     ),
-    (0x29, 0x1020): CSA_DATA,
+    (0x29, 0x1020):
+    CSA_DATA,
 }
 SIEMENS_EXPLICIT_VR_ELEMENTS = {
-    (0x19, 0x100A): 28,
-    (0x19, 0x1028): 43.403,
+    (0x19, 0x100A):
+    28,
+    (0x19, 0x1028):
+    43.403,
     (0x19, 0x1029): (
         740.00000002,
         0.0,

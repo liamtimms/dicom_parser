@@ -1,9 +1,8 @@
 """
 Definition of the :class:`Signed64bitVeryLongTestCase` class.
 """
-from dicom_parser.data_elements.signed_64bit_very_long import (
-    Signed64bitVeryLong,
-)
+from dicom_parser.data_elements.signed_64bit_very_long import \
+    Signed64bitVeryLong
 from tests.test_data_element import DataElementTestCase
 
 

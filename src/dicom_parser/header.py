@@ -10,23 +10,17 @@ from pydicom.dataelem import DataElement as PydicomDataElement
 from pydicom.dataset import FileDataset
 
 from dicom_parser.data_element import DataElement
-from dicom_parser.messages import (
-    INVALID_ELEMENT_IDENTIFIER,
-    MISSING_HEADER_INFO,
-    UNREGISTERED_MODALITY,
-)
+from dicom_parser.messages import (INVALID_ELEMENT_IDENTIFIER,
+                                   MISSING_HEADER_INFO, UNREGISTERED_MODALITY)
 from dicom_parser.utils import read_file, requires_pandas
 from dicom_parser.utils.bids.bids_detector import BidsDetector
 from dicom_parser.utils.format_header_df import format_header_df
 from dicom_parser.utils.plane import Plane
 from dicom_parser.utils.private_tags import PRIVATE_TAGS
-from dicom_parser.utils.sequence_detector.sequence_detector import (
-    SequenceDetector,
-)
-from dicom_parser.utils.value_representation import (
-    ValueRepresentation,
-    get_value_representation,
-)
+from dicom_parser.utils.sequence_detector.sequence_detector import \
+    SequenceDetector
+from dicom_parser.utils.value_representation import (ValueRepresentation,
+                                                     get_value_representation)
 from dicom_parser.utils.vr_to_data_element import get_data_element_class
 
 
@@ -88,8 +82,7 @@ class Header:
     #: Will be prepended to the private data elements section when printing the
     #: header.
     _PRIVATE_SECTION_TITLE: str = (
-        "\n\nPrivate Data Elements\n=====================\n"
-    )
+        "\n\nPrivate Data Elements\n=====================\n")
 
     def __init__(
         self,
@@ -140,12 +133,10 @@ class Header:
         str
             String representation
         """
-        base_elements = self.get_data_elements(
-            exclude=ValueRepresentation.SQ, private=False
-        )
+        base_elements = self.get_data_elements(exclude=ValueRepresentation.SQ,
+                                               private=False)
         sequences = self.get_data_elements(
-            value_representation=ValueRepresentation.SQ
-        )
+            value_representation=ValueRepresentation.SQ)
         privates = self.get_data_elements(private=True)
         # Try to use pandas to format the table nicely
         try:
@@ -158,22 +149,18 @@ class Header:
             if privates:
                 base_elements += [self._PRIVATE_SECTION_TITLE, *privates]
             return "\n".join(
-                [str(data_element) for data_element in base_elements]
-            )
+                [str(data_element) for data_element in base_elements])
         # Otherwise, format using pandas.
         else:
             sequences_string = ""
             if sequences:
                 sequences_string = self._SEQUENCES_SECTION_TITLE
                 sequences_string += self._SEQUENCE_SEPERATOR.join(
-                    [str(sequence) for sequence in sequences]
-                )
+                    [str(sequence) for sequence in sequences])
             privates_df = self.to_dataframe(privates)
-            privates_string = (
-                self._PRIVATE_SECTION_TITLE + format_header_df(privates_df)
-                if not privates_df.empty
-                else ""
-            )
+            privates_string = (self._PRIVATE_SECTION_TITLE +
+                               format_header_df(privates_df)
+                               if not privates_df.empty else "")
             return format_header_df(base) + sequences_string + privates_string
 
     def __repr__(self) -> str:
@@ -224,9 +211,9 @@ class Header:
                     except TypeError:
                         pass
         try:
-            return self.sequence_detector.detect(
-                modality, values, verbose=verbose
-            )
+            return self.sequence_detector.detect(modality,
+                                                 values,
+                                                 verbose=verbose)
         except NotImplementedError:
             pass
 
@@ -241,9 +228,9 @@ class Header:
         """
         modality = self.get("Modality")
         try:
-            return self.bids_detector.build_path(
-                modality, self.detected_sequence, self.as_dict
-            )
+            return self.bids_detector.build_path(modality,
+                                                 self.detected_sequence,
+                                                 self.as_dict)
         except NotImplementedError:
             pass
 
@@ -269,8 +256,7 @@ class Header:
         if isinstance(value, PydicomDataElement):
             return value
         raise KeyError(
-            f"The keyword: '{keyword}' does not exist in the header!"
-        )
+            f"The keyword: '{keyword}' does not exist in the header!")
 
     def get_raw_element_by_tag(self, tag: tuple) -> PydicomDataElement:
         """
@@ -293,8 +279,7 @@ class Header:
         raise KeyError(f"The tag: {tag} does not exist in the header!")
 
     def get_raw_element(
-        self, tag_or_keyword: Union[str, tuple]
-    ) -> PydicomDataElement:
+            self, tag_or_keyword: Union[str, tuple]) -> PydicomDataElement:
         """
         Returns a pydicom PydicomDataElement from the associated FileDataset
         either by tag (passed as a tuple) or a keyword (passed as a string).
@@ -320,13 +305,12 @@ class Header:
         # If not a keyword or a tag, raise a TypeError
         else:
             message = INVALID_ELEMENT_IDENTIFIER.format(
-                tag_or_keyword=tag_or_keyword, input_type=type(tag_or_keyword)
-            )
+                tag_or_keyword=tag_or_keyword, input_type=type(tag_or_keyword))
             raise TypeError(message)
 
     def get_data_element(
-        self, tag_or_keyword: Union[str, tuple, PydicomDataElement]
-    ) -> DataElement:
+            self, tag_or_keyword: Union[str, tuple,
+                                        PydicomDataElement]) -> DataElement:
         """
         Returns a :class:`~dicom_parser.data_element.DataElement` subclass
         instance matching the requested tag or keyword.
@@ -348,14 +332,12 @@ class Header:
         """
         if isinstance(tag_or_keyword, (tuple, str)):
             if isinstance(tag_or_keyword, str):
-                tag_or_keyword = (
-                    self.get_private_tag(tag_or_keyword) or tag_or_keyword
-                )
+                tag_or_keyword = (self.get_private_tag(tag_or_keyword)
+                                  or tag_or_keyword)
             raw_element = self.get_raw_element(tag_or_keyword)
         elif not isinstance(tag_or_keyword, PydicomDataElement):
             message = INVALID_ELEMENT_IDENTIFIER.format(
-                tag_or_keyword=tag_or_keyword, input_type=type(tag_or_keyword)
-            )
+                tag_or_keyword=tag_or_keyword, input_type=type(tag_or_keyword))
             raise TypeError(message)
         else:
             raw_element = tag_or_keyword
@@ -399,19 +381,16 @@ class Header:
             Data elements contained in this header
         """
         data_elements = []
-        filter_by_vr = isinstance(
-            value_representation, (ValueRepresentation, list, tuple)
-        )
+        filter_by_vr = isinstance(value_representation,
+                                  (ValueRepresentation, list, tuple))
         exclusions = isinstance(exclude, (ValueRepresentation, list, tuple))
         for data_element in self.data_elements:
             if isinstance(value_representation, ValueRepresentation):
                 matching_vr = (
-                    data_element.VALUE_REPRESENTATION == value_representation
-                )
+                    data_element.VALUE_REPRESENTATION == value_representation)
             elif isinstance(value_representation, (list, tuple)):
-                matching_vr = (
-                    data_element.VALUE_REPRESENTATION in value_representation
-                )
+                matching_vr = (data_element.VALUE_REPRESENTATION
+                               in value_representation)
             filtered = filter_by_vr and not matching_vr
             if isinstance(exclude, ValueRepresentation):
                 excluded_vr = data_element.VALUE_REPRESENTATION == exclude
@@ -539,9 +518,8 @@ class Header:
         # Tries to find a private tags tuple if the given tag_or_keyword is a
         # keyword that has been registered in the private_tags module
         if isinstance(tag_or_keyword, str):
-            tag_or_keyword = (
-                self.get_private_tag(tag_or_keyword) or tag_or_keyword
-            )
+            tag_or_keyword = (self.get_private_tag(tag_or_keyword)
+                              or tag_or_keyword)
 
         # Get the requested value
         value = None
@@ -628,15 +606,12 @@ class Header:
         """
         import pandas as pd
 
-        data_elements = (
-            data_elements
-            if data_elements is not None
-            else self.get_data_elements(
-                value_representation=value_representation,
-                exclude=exclude,
-                private=private,
-            )
-        )
+        data_elements = (data_elements if data_elements is not None else
+                         self.get_data_elements(
+                             value_representation=value_representation,
+                             exclude=exclude,
+                             private=private,
+                         ))
         data_elements = [
             data_element.to_series() for data_element in data_elements
         ]
@@ -649,9 +624,9 @@ class Header:
         else:
             return pd.DataFrame()
 
-    def keyword_contains(
-        self, query: str, exact: bool = False
-    ) -> List[DataElement]:
+    def keyword_contains(self,
+                         query: str,
+                         exact: bool = False) -> List[DataElement]:
         """
         Returns a list of data elements in which the keyword contains the
         specified provided string.

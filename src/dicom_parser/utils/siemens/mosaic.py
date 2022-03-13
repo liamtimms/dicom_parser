@@ -9,6 +9,7 @@ volumes used by Siemens. For more information read `this
 from typing import Tuple
 
 import numpy as np
+
 from dicom_parser.header import Header
 from dicom_parser.utils.siemens import messages
 
@@ -50,11 +51,9 @@ class Mosaic:
         # Read the ASCII (ASCCONV) header encoded withing the series CSA
         # header.
         self.ascii_header = self.series_header_info.get(
-            self.CSA_ASCII_HEADER_KEY, {}
-        ).get("value", {})
+            self.CSA_ASCII_HEADER_KEY, {}).get("value", {})
         self.slice_array = self.ascii_header.get(
-            self.CSA_ASCII_SLICE_ARRAY_KEY, {}
-        )
+            self.CSA_ASCII_SLICE_ARRAY_KEY, {})
         self.ascending = "anAsc" in self.slice_array
         self.volume_shape = self.get_volume_shape()
         self.mosaic_dimensions = self.get_mosaic_dimensions()
@@ -101,9 +100,8 @@ class Mosaic:
             z = self.slice_array.get("lSize", 0)
             return (*image_shape, z)
 
-    def get_image_position(
-        self, iop: np.ndarray
-    ) -> Tuple[float, float, float]:
+    def get_image_position(self,
+                           iop: np.ndarray) -> Tuple[float, float, float]:
         """
         Returns a fixed Image Position (Patient) header field value.
 
@@ -182,8 +180,7 @@ class Mosaic:
         n_rows = self.mosaic_dimensions[0]
         n_columns = self.mosaic_dimensions[1]
         return [
-            self.get_tile(i_row, i_column)
-            for i_row in range(n_rows)
+            self.get_tile(i_row, i_column) for i_row in range(n_rows)
             for i_column in range(n_columns)
         ]
 

@@ -4,11 +4,9 @@ Tests for the
 class.
 """
 from dicom_parser.data_elements.private_data_element import PrivateDataElement
-from tests.data_elements.fixtures import (
-    PRIVATE_DATA_ELEMENTS,
-    SIEMENS_DWI_ELEMENTS,
-    SIEMENS_EXPLICIT_VR_ELEMENTS,
-)
+from tests.data_elements.fixtures import (PRIVATE_DATA_ELEMENTS,
+                                          SIEMENS_DWI_ELEMENTS,
+                                          SIEMENS_EXPLICIT_VR_ELEMENTS)
 from tests.fixtures import TEST_SIEMENS_DWI_PATH, TEST_SIEMENS_EXPLICIT_VR
 from tests.test_data_element import DataElementTestCase
 
@@ -78,7 +76,7 @@ class SiemensExplicitVRTestCase(PrivateDataElementTestCase):
         tag = self.ACQISITION_TIMES_TAG
         self.header.raw[tag].value = 3
         with self.assertRaises(TypeError):
-            self.header.get_data_element(tag).value # pylint: disable=W0106
+            self.header.get_data_element(tag).value  # pylint: disable=W0106
 
     def test_n_images_in_mosaic_bad_type(self):
         """
@@ -88,7 +86,7 @@ class SiemensExplicitVRTestCase(PrivateDataElementTestCase):
         tag = self.N_IMAGES_TAG
         self.header.raw[tag].value = 3.0
         with self.assertRaises(TypeError):
-            self.header.get_data_element(tag).value # pylint: disable=W0106
+            self.header.get_data_element(tag).value  # pylint: disable=W0106
 
     def test_badwidth_per_pixel_phase_encode_bad_type(self):
         """
@@ -98,4 +96,4 @@ class SiemensExplicitVRTestCase(PrivateDataElementTestCase):
         tag = self.BANDWIDTH_PER_PIXEL_TAG
         self.header.raw[tag].value = "?"
         with self.assertRaises(TypeError):
-            self.header.get_data_element(tag).value # pylint: disable=W0106
+            self.header.get_data_element(tag).value  # pylint: disable=W0106

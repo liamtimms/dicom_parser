@@ -1,12 +1,14 @@
 from unittest import TestCase
 
 import pydicom
+
 from dicom_parser.utils.siemens.csa.header import CsaAsciiHeader
 from dicom_parser.utils.siemens.private_tags import SIEMENS_PRIVATE_TAGS
 from tests.fixtures import TEST_RSFMRI_IMAGE_PATH
 
 
 class CsaAsciiHeaderTestCase(TestCase):
+
     @classmethod
     def setUpClass(cls):
         dcm = pydicom.dcmread(TEST_RSFMRI_IMAGE_PATH)

@@ -4,21 +4,14 @@ Definition of the :class:`BidsDetector` class.
 import warnings
 from typing import Callable, Tuple
 
-from dicom_parser.utils.bids.messages import (
-    MISSING_PATIENT_ID,
-    MISSING_SESSION_TIME,
-    UNREGISTERED_DATA_TYPE,
-)
+from dicom_parser.utils.bids.messages import (MISSING_PATIENT_ID,
+                                              MISSING_SESSION_TIME,
+                                              UNREGISTERED_DATA_TYPE)
 from dicom_parser.utils.bids.sequence_to_bids import SEQUENCE_TO_BIDS
-from dicom_parser.utils.bids.utils import (
-    BIDS_PATH_TEMPLATE,
-    NAME_PARTS_BY_DATA_TYPE,
-)
+from dicom_parser.utils.bids.utils import (BIDS_PATH_TEMPLATE,
+                                           NAME_PARTS_BY_DATA_TYPE)
 from dicom_parser.utils.sequence_detector.messages import (
-    INVALID_MODALITY,
-    INVALID_SEQUENCE,
-    INVALID_SEQUENCE_KEYS,
-)
+    INVALID_MODALITY, INVALID_SEQUENCE, INVALID_SEQUENCE_KEYS)
 
 
 class BidsDetector:
@@ -97,14 +90,12 @@ class BidsDetector:
         for required_key in self.REQUIRED_KEYS:
             if required_key not in fields:
                 message = INVALID_SEQUENCE_KEYS.format(
-                    required_key=required_key, fields=fields
-                )
+                    required_key=required_key, fields=fields)
                 raise ValueError(message)
         return True
 
-    def get_field_values(
-        self, sequence: str, fields: dict, header: dict
-    ) -> dict:
+    def get_field_values(self, sequence: str, fields: dict,
+                         header: dict) -> dict:
         """
         Fills instance-specific values as required for an appropriate BIDS
         naming.
@@ -125,9 +116,8 @@ class BidsDetector:
             return None
         result = {}
         for key, value in fields.items():
-            result[key] = (
-                value(header) if isinstance(value, Callable) else value
-            )
+            result[key] = (value(header)
+                           if isinstance(value, Callable) else value)
         return result
 
     def detect(self, modality: str, sequence: str, header: dict) -> dict:
@@ -153,9 +143,8 @@ class BidsDetector:
         fields = modality_fields.get(sequence)
         return self.get_field_values(sequence, fields, header)
 
-    def build_anonymized_parts(
-        self, modality: str, sequence: str, header: dict
-    ) -> Tuple[str, str]:
+    def build_anonymized_parts(self, modality: str, sequence: str,
+                               header: dict) -> Tuple[str, str]:
         field_values = self.detect(modality, sequence, header)
         if field_values is None:
             return None, None
@@ -166,11 +155,8 @@ class BidsDetector:
         except KeyError:
             message = UNREGISTERED_DATA_TYPE.format(data_type=data_type)
             raise NotImplementedError(message)
-        labels = (
-            f"{part}-{field_values.get(part)}"
-            for part in parts
-            if field_values.get(part)
-        )
+        labels = (f"{part}-{field_values.get(part)}" for part in parts
+                  if field_values.get(part))
         labels = "_".join(labels)
         if labels != "":
             return data_type, f"_{labels}_{suffix}"
@@ -184,8 +170,7 @@ class BidsDetector:
             raise KeyError(MISSING_PATIENT_ID)
         else:
             return self.SUBJECT_IDENTIFIER_TEMPLATE.format(
-                subject_id=subject_id
-            )
+                subject_id=subject_id)
 
     def get_session_identifier(self, header_info: dict) -> str:
         try:
@@ -197,15 +182,12 @@ class BidsDetector:
             session_date = date.strftime(self.SESSION_DATE_FORMAT)
             session_time = time.strftime(self.SESSION_TIME_FORMAT)
             return self.SESSION_IDENTIFIER_TEMPLATE.format(
-                session_date=session_date, session_time=session_time
-            )
+                session_date=session_date, session_time=session_time)
 
-    def build_path(
-        self, modality: str, sequence: str, header_info: dict
-    ) -> str:
+    def build_path(self, modality: str, sequence: str,
+                   header_info: dict) -> str:
         data_type, labels = self.build_anonymized_parts(
-            modality, sequence, header_info
-        )
+            modality, sequence, header_info)
         if data_type is None:
             return None
         subject = self.get_subject_identifier(header_info)

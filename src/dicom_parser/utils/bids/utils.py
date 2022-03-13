@@ -28,5 +28,4 @@ NAME_PARTS_BY_DATA_TYPE: Dict[str, List[str]] = {
 }
 
 BIDS_PATH_TEMPLATE: str = (
-    "{subject}/{session}/{data_type}/{subject}_{session}{labels}"
-)
+    "{subject}/{session}/{data_type}/{subject}_{session}{labels}")

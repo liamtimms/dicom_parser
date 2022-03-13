@@ -5,11 +5,8 @@ from typing import Callable, Tuple
 
 from dicom_parser.utils.sequence_detector.lookups import LOOKUPS
 from dicom_parser.utils.sequence_detector.messages import (
-    INVALID_MODALITY,
-    INVALID_OPERATOR_OR_LOOKUP,
-    MISSING_RULE_KEY,
-    WRONG_DEFINITION_TYPE,
-)
+    INVALID_MODALITY, INVALID_OPERATOR_OR_LOOKUP, MISSING_RULE_KEY,
+    WRONG_DEFINITION_TYPE)
 from dicom_parser.utils.sequence_detector.operators import OPERATORS
 from dicom_parser.utils.sequence_detector.sequences import SEQUENCE_RULES
 
@@ -81,8 +78,7 @@ class SequenceDetector:
         lookup_function = LOOKUPS.get(lookup_key)
         if not lookup_function:
             raise NotImplementedError(
-                INVALID_OPERATOR_OR_LOOKUP.format(operator=lookup_key)
-            )
+                INVALID_OPERATOR_OR_LOOKUP.format(operator=lookup_key))
         return lookup_function
 
     def retreive_operator(self, rule: dict) -> Callable:
@@ -108,13 +104,13 @@ class SequenceDetector:
         operator_function = OPERATORS.get(operator_key)
         if not operator_function:
             raise NotImplementedError(
-                INVALID_OPERATOR_OR_LOOKUP.format(operator=operator_key)
-            )
+                INVALID_OPERATOR_OR_LOOKUP.format(operator=operator_key))
         return operator_function
 
-    def evaluate_rule(
-        self, rule: dict, header_fields: dict, verbose: bool = False
-    ) -> bool:
+    def evaluate_rule(self,
+                      rule: dict,
+                      header_fields: dict,
+                      verbose: bool = False) -> bool:
         """
         Evaluates a single sequence categorization rule.
 
@@ -153,9 +149,10 @@ class SequenceDetector:
             print(result_text)
         return result
 
-    def check_definition(
-        self, definition, header_fields: dict, verbose: bool = False
-    ) -> bool:
+    def check_definition(self,
+                         definition,
+                         header_fields: dict,
+                         verbose: bool = False) -> bool:
         """
         Checks whether the specified header information values satisfy the
         provided definition.
@@ -187,28 +184,20 @@ class SequenceDetector:
         # Raise error otherwise.
         if not isinstance(definition, (dict, list, tuple)):
             message = WRONG_DEFINITION_TYPE.format(
-                definition_type=type(definition)
-            )
+                definition_type=type(definition))
             raise TypeError(message)
         if isinstance(definition, tuple):
             return any(
                 self.check_definition(d, header_fields, verbose=verbose)
-                for d in definition
-            )
-        rules = (
-            definition.get(self.RULES_KEY, [])
-            if isinstance(definition, dict)
-            else definition
-        )
-        rules_evaluations = (
-            self.evaluate_rule(rule, header_fields, verbose=verbose)
-            for rule in rules
-        )
-        operator = (
-            definition.get(self.OPERATOR_KEY, self.DEFAULT_OPERATOR)
-            if isinstance(definition, dict)
-            else self.DEFAULT_OPERATOR
-        )
+                for d in definition)
+        rules = (definition.get(self.RULES_KEY, []) if isinstance(
+            definition, dict) else definition)
+        rules_evaluations = (self.evaluate_rule(rule,
+                                                header_fields,
+                                                verbose=verbose)
+                             for rule in rules)
+        operator = (definition.get(self.OPERATOR_KEY, self.DEFAULT_OPERATOR)
+                    if isinstance(definition, dict) else self.DEFAULT_OPERATOR)
         operator = OPERATORS.get(operator)
         if not operator:
             message = INVALID_OPERATOR_OR_LOOKUP.format(operator=operator)
@@ -240,9 +229,10 @@ class SequenceDetector:
             message = INVALID_MODALITY.format(modality=modality)
             raise NotImplementedError(message)
 
-    def detect(
-        self, modality: str, values: dict, verbose: bool = False
-    ) -> str:
+    def detect(self,
+               modality: str,
+               values: dict,
+               verbose: bool = False) -> str:
         """
         Tries to detect the imaging sequence according to the modality and
         provided header information.

@@ -38,7 +38,7 @@ class TimeTestCase(DataElementTestCase):
 
     def test_type_error(self):
         original_value = self.raw_element.value
-        self.raw_element.value = ("why?",)
+        self.raw_element.value = ("why?", )
         element = self.TEST_CLASS(self.raw_element)
         with self.assertRaises(TypeError):
             element.value

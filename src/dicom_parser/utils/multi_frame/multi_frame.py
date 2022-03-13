@@ -4,12 +4,13 @@ Definition of the :class:`MultiFrame` class.
 from typing import List, Tuple
 
 import numpy as np
+from pydicom.datadict import tag_for_keyword
+from pydicom.tag import BaseTag
+
 from dicom_parser.header import Header
 from dicom_parser.utils.exceptions import DicomParsingError
 from dicom_parser.utils.multi_frame import messages
 from dicom_parser.utils.multi_frame.functional_groups import FunctionalGroups
-from pydicom.datadict import tag_for_keyword
-from pydicom.tag import BaseTag
 
 
 class MultiFrame:
@@ -126,8 +127,7 @@ class MultiFrame:
         except KeyError:
             sequence_type = "shared" if shared else "per frame"
             message = messages.MISSING_FUNCTIONAL_GROUPS.format(
-                sequence_type=sequence_type
-            )
+                sequence_type=sequence_type)
             raise DicomParsingError(message)
         if shared:
             try:
@@ -202,12 +202,10 @@ class MultiFrame:
         try:
             return tuple(
                 dimension["DimensionIndexPointer"]
-                for dimension in self.header["DimensionIndexSequence"]
-            )
+                for dimension in self.header["DimensionIndexSequence"])
         except (KeyError, TypeError) as e:
             message = messages.MISSING_DIMENSION_INDEX_POINTERS.format(
-                exception=e
-            )
+                exception=e)
             raise DicomParsingError(message)
 
     def get_frame_indices(self) -> np.ndarray:
@@ -229,9 +227,8 @@ class MultiFrame:
         if self.STACK_ID_TAG in pointers:
             index = pointers.index(self.STACK_ID_TAG)
             indices = np.delete(indices, index, axis=1)
-            pointers = tuple(
-                tag for tag in pointers if tag != self.STACK_ID_TAG
-            )
+            pointers = tuple(tag for tag in pointers
+                             if tag != self.STACK_ID_TAG)
         # Remove dimension indices refering to derived volumes.
         if self.has_derived_appendix:
             if self.DERIVED_VOLUME_TAG not in pointers:
@@ -250,9 +247,8 @@ class MultiFrame:
         Tuple[str]
             Stack IDs by frame
         """
-        return tuple(
-            group.get_stack_id() for group in self.frame_functional_groups
-        )
+        return tuple(group.get_stack_id()
+                     for group in self.frame_functional_groups)
 
     def validate_high_dim_shape(self, shape: tuple) -> None:
         """
@@ -357,8 +353,7 @@ class MultiFrame:
         """
         try:
             plane_orientation = (
-                self.shared_functional_groups.get_plane_orientation()
-            )
+                self.shared_functional_groups.get_plane_orientation())
         except DicomParsingError:
             plane_orientation = self.sample_sequence.get_plane_orientation()
         try:
@@ -534,8 +529,7 @@ class MultiFrame:
         """
         if self._frame_functional_groups is None:
             self._frame_functional_groups = self.get_functional_groups(
-                shared=False
-            )
+                shared=False)
         return self._frame_functional_groups
 
     @property
@@ -554,8 +548,7 @@ class MultiFrame:
         """
         if self._shared_functional_groups is None:
             self._shared_functional_groups = self.get_functional_groups(
-                shared=True
-            )
+                shared=True)
         return self._shared_functional_groups
 
     @property
@@ -633,8 +626,7 @@ class MultiFrame:
         """
         if self._dimension_index_pointers is None:
             self._dimension_index_pointers = (
-                self.get_dimension_index_pointers()
-            )
+                self.get_dimension_index_pointers())
         return self._dimension_index_pointers
 
     @property
@@ -653,8 +645,7 @@ class MultiFrame:
         """
         if self._image_orientation_patient is None:
             self._image_orientation_patient = (
-                self.get_image_orientation_patient()
-            )
+                self.get_image_orientation_patient())
         return self._image_orientation_patient
 
     @property

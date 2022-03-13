@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import numpy as np
+
 from dicom_parser.image import Image
 from dicom_parser.utils.siemens.mosaic import Mosaic
 from tests.fixtures import (TEST_RSFMRI_IMAGE_PATH, TEST_RSFMRI_IMAGE_VOLUME,
@@ -9,6 +10,7 @@ from tests.fixtures import (TEST_RSFMRI_IMAGE_PATH, TEST_RSFMRI_IMAGE_VOLUME,
 
 
 class MosaicTestCase(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.image = Image(TEST_RSFMRI_IMAGE_PATH)

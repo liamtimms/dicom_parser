@@ -5,13 +5,16 @@ FUNCTIONAL_FIELDMAP_RULES = [
         "lookup": "exact",
     },
     {
-        "key": "SequenceVariant",
+        "key":
+        "SequenceVariant",
         "value": [
             ("Segmented k-Space", "Oversampling Phase"),
             "Segmented k-Space",
         ],
-        "lookup": "exact",
-        "operator": "any",
+        "lookup":
+        "exact",
+        "operator":
+        "any",
     },
     {
         "key": "ImageType",

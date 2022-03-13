@@ -193,8 +193,7 @@ def obj_from_atoms(atoms, namespace):
             raise AscconvParseError(message)
         if not isinstance(root_obj, maker):
             message = messages.BAD_ASCCONV_TYPE.format(
-                el=el, maker=maker, expected_type=type(root_obj)
-            )
+                el=el, maker=maker, expected_type=type(root_obj))
             raise AscconvParseError(message)
     return prev_root, name
 

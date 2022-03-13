@@ -1,9 +1,8 @@
 """
 Definition of the :class:`FloatingPointSingleTestCase` class.
 """
-from dicom_parser.data_elements.floating_point_single import (
-    FloatingPointSingle,
-)
+from dicom_parser.data_elements.floating_point_single import \
+    FloatingPointSingle
 from tests.test_data_element import DataElementTestCase
 
 

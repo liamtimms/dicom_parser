@@ -5,10 +5,8 @@ from typing import Any, Iterable
 
 from dicom_parser.utils.siemens.csa.ascii import CsaAsciiHeader
 from dicom_parser.utils.siemens.csa.exceptions import CsaReadError
-from dicom_parser.utils.siemens.csa.messages import (
-    INVALID_CHECK_BIT,
-    READ_OVERREACH,
-)
+from dicom_parser.utils.siemens.csa.messages import (INVALID_CHECK_BIT,
+                                                     READ_OVERREACH)
 from dicom_parser.utils.siemens.csa.unpacker import Unpacker
 from dicom_parser.utils.siemens.csa.utils import VR_TO_TYPE, strip_to_null
 
@@ -112,9 +110,8 @@ class CsaHeader:
             )
             raise CsaReadError(message)
 
-    def parse_items(
-        self, unpacker: Unpacker, n_items: int, vr: str, vm: int
-    ) -> Any:
+    def parse_items(self, unpacker: Unpacker, n_items: int, vr: str,
+                    vm: int) -> Any:
         """
         Parses a single header element's value.
 
@@ -161,8 +158,7 @@ class CsaHeader:
                 destination = unpacker.pointer + item_len
                 if destination > self.header_size:
                     message = READ_OVERREACH.format(
-                        destination=destination, max_length=self.header_size
-                    )
+                        destination=destination, max_length=self.header_size)
                     raise CsaReadError(message)
             if i_item >= n_values:
                 assert item_len == 0
@@ -188,8 +184,7 @@ class CsaHeader:
         # 4th element (SyngoDT) seems to be a numeric representation of the
         # datatype, which is already provided as the VR.
         name, vm, vr, _, n_items, check_bit = unpacker.unpack(
-            self.TAG_FORMAT_STRING
-        )
+            self.TAG_FORMAT_STRING)
         self.validate_check_bit(i_tag, check_bit)
         name = strip_to_null(name)
         vr = strip_to_null(vr)

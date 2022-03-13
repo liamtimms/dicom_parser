@@ -5,15 +5,18 @@ DWI_FIELDMAP = [
         "lookup": "exact",
     },
     {
-        "key": "SequenceVariant",
+        "key":
+        "SequenceVariant",
         "value": [
             ("Segmented k-Space", "Steady State"),
             ("Segmented k-Space", "Spoiled"),
             ("Segmented k-Space", "Spoiled", "Oversampling Phase"),
             ("Segmented k-Space", "Steady State", "Oversampling Phase"),
         ],
-        "lookup": "exact",
-        "operator": "any",
+        "lookup":
+        "exact",
+        "operator":
+        "any",
     },
     {
         "key": "ImageType",

@@ -1,17 +1,14 @@
 from unittest import TestCase
 
 from dicom_parser.image import Image
-from dicom_parser.utils.sequence_detector.sequence_detector import (
-    SequenceDetector,
-)
-from tests.fixtures import (
-    TEST_EP2D_IMAGE_PATH,
-    TEST_IMAGE_PATH,
-    TEST_RSFMRI_IMAGE_PATH,
-)
+from dicom_parser.utils.sequence_detector.sequence_detector import \
+    SequenceDetector
+from tests.fixtures import (TEST_EP2D_IMAGE_PATH, TEST_IMAGE_PATH,
+                            TEST_RSFMRI_IMAGE_PATH)
 
 
 class SequenceDetectorCase(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.sequence_detector = SequenceDetector()
@@ -30,8 +27,7 @@ class SequenceDetectorCase(TestCase):
         self.assertEqual(value, expected)
 
     def test_detecting_with_unknown_modality_raises_not_implemented_error(
-        self,
-    ):
+        self, ):
         with self.assertRaises(NotImplementedError):
             self.sequence_detector.detect("AA", {"a": "a"})
 
@@ -43,10 +39,8 @@ class SequenceDetectorCase(TestCase):
 
     def test_detecting_unknown_sequence_returns_none(self):
         self.assertIsNone(
-            self.sequence_detector.detect("Magnetic Resonance", {"a": "a"})
-        )
+            self.sequence_detector.detect("Magnetic Resonance", {"a": "a"}))
 
     def test_check_empty_definition(self):
         self.assertIsNone(
-            self.sequence_detector.detect("Magnetic Resonance", {})
-        )
+            self.sequence_detector.detect("Magnetic Resonance", {}))

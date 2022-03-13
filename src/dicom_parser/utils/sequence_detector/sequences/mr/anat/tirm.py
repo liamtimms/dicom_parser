@@ -5,14 +5,16 @@ TIRM_RULES = [
         "lookup": "exact",
     },
     {
-        "key": "SequenceVariant",
+        "key":
+        "SequenceVariant",
         "value": (
             "Segmented k-Space",
             "Spoiled",
             "MAG Prepared",
             "Oversampling Phase",
         ),
-        "lookup": "exact",
+        "lookup":
+        "exact",
     },
     {
         "key": "ScanOptions",

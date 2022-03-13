@@ -83,8 +83,7 @@ def find_task_name(header: dict) -> str:
         task = "rest"
     else:
         task = "".join(
-            [strip_element(i).capitalize() for i in description.split("_")]
-        )
+            [strip_element(i).capitalize() for i in description.split("_")])
     return task
 
 

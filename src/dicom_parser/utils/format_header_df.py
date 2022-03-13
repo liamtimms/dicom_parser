@@ -42,6 +42,6 @@ def format_header_df(df, max_colwidth: int = 28) -> str:
             form = "{{:<2}}".format()
         if form is not None:
             formatters[column_name] = functools.partial(str.format, form)
-    return df.to_string(
-        formatters=formatters, justify="left", max_colwidth=max_colwidth
-    )
+    return df.to_string(formatters=formatters,
+                        justify="left",
+                        max_colwidth=max_colwidth)

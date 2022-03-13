@@ -6,6 +6,7 @@ import array
 from typing import Tuple, Union
 
 import numpy as np
+
 from dicom_parser.utils.siemens import messages
 from dicom_parser.utils.siemens.csa.header import CsaHeader
 
@@ -15,8 +16,7 @@ B_MATRIX_INDICES = np.array([0, 1, 2, 1, 3, 4, 2, 4, 5])
 
 
 def parse_siemens_slice_timing(
-    value: Union[bytes, float]
-) -> Union[float, Tuple[float]]:
+        value: Union[bytes, float]) -> Union[float, Tuple[float]]:
     """
     Parses a SIEMENS MR image's slice timing as saved in the private
     (0019, 1029) `MosaicRefAcqTimes`_ tag to a list of floats representing
@@ -38,16 +38,13 @@ def parse_siemens_slice_timing(
     if isinstance(value, float):
         return value
     elif isinstance(value, bytes):
-        return tuple(
-            [
-                round(slice_time, 5)
-                for slice_time in list(array.array("d", value))
-            ]
-        )
+        return tuple([
+            round(slice_time, 5)
+            for slice_time in list(array.array("d", value))
+        ])
     else:
         message = messages.ACQUISITION_TIMES_TYPEERROR.format(
-            value=value, bad_type=(type(value))
-        )
+            value=value, bad_type=(type(value)))
         raise TypeError(message)
 
 
@@ -97,8 +94,7 @@ def parse_siemens_number_of_slices_in_mosaic(value: Union[bytes, int]) -> int:
         return int.from_bytes(value, byteorder="little")
     else:
         message = messages.N_IMAGES_IN_MOSAIC_TYPEERROR.format(
-            value=value, bad_type=type(value)
-        )
+            value=value, bad_type=type(value))
         raise TypeError(message)
 
 
@@ -120,9 +116,8 @@ def parse_siemens_b_matrix(value: bytes) -> np.ndarray:
     return np.array(raw)[B_MATRIX_INDICES].reshape(3, 3)
 
 
-def b_matrix_to_q_vector(
-    b_matrix: np.ndarray, tol: float = None
-) -> np.ndarray:
+def b_matrix_to_q_vector(b_matrix: np.ndarray,
+                         tol: float = None) -> np.ndarray:
     """
     Estimate q-vector from B matrix.
 
@@ -204,7 +199,7 @@ def nearest_pos_semi_def(b_matrix: np.ndarray):
     if cardneg == 3:
         return np.zeros((3, 3))
     lam1a, lam2a, lam3a = vals
-    scalers = np.zeros((3,))
+    scalers = np.zeros((3, ))
     if cardneg == 2:
         b112 = np.max([0, lam1a + (lam2a + lam3a) / 3.0])
         scalers[0] = b112
@@ -226,8 +221,7 @@ def nearest_pos_semi_def(b_matrix: np.ndarray):
 
 
 def parse_siemens_bandwith_per_pixel_phase_encode(
-    value: Union[bytes, float]
-) -> float:
+        value: Union[bytes, float]) -> float:
     """
     Parses the BandwidthPerPixelPhaseEncode (0019, 1028) private tag value.
 
@@ -252,8 +246,7 @@ def parse_siemens_bandwith_per_pixel_phase_encode(
         return array.array("d", value)[0]
     else:
         message = messages.BANDWITH_PER_PIXEL_TYPEERROR.format(
-            bad_type=type(value)
-        )
+            bad_type=type(value))
         raise TypeError(message)
 
 

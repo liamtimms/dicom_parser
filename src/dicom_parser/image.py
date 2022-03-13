@@ -16,10 +16,8 @@ from dicom_parser.utils.exceptions import PrecisionError
 from dicom_parser.utils.multi_frame import MultiFrame
 from dicom_parser.utils.read_file import read_file
 from dicom_parser.utils.siemens.mosaic import Mosaic
-from dicom_parser.utils.siemens.private_tags import (
-    b_matrix_to_q_vector,
-    nearest_pos_semi_def,
-)
+from dicom_parser.utils.siemens.private_tags import (b_matrix_to_q_vector,
+                                                     nearest_pos_semi_def)
 
 
 class Image:
@@ -244,9 +242,9 @@ class Image:
         rotation = np.eye(3)
         rotation[:, :2] = np.fliplr(iop)
         rotation[:, 2] = s_norm
-        precision = np.allclose(
-            np.eye(3), np.dot(rotation, rotation.T), atol=5e-5
-        )
+        precision = np.allclose(np.eye(3),
+                                np.dot(rotation, rotation.T),
+                                atol=5e-5)
         if not precision:
             raise PrecisionError(messages.BAD_ROTATION_MATRIX)
         return rotation
@@ -385,7 +383,7 @@ class Image:
         b_value = self.voxel_space_b_value
         if q_vector is not None and b_value is not None:
             if b_value == 0:
-                return np.zeros((3,))
+                return np.zeros((3, ))
             return q_vector / b_value
 
     def check_multi_frame(self) -> bool:

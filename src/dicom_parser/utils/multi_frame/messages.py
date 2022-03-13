@@ -16,8 +16,7 @@ MISSING_DIMENSION_INDEX_POINTERS: str = "Failed to read dimension index pointers
 
 #: Missing index in frame functional groups information.
 MISSING_FRAME_INDEX: str = (
-    "Failed to read frame indices for a multi-frame encoded image."
-)
+    "Failed to read frame indices for a multi-frame encoded image.")
 
 #: Missing per frame functional groups sequences.
 MISSING_FUNCTIONAL_GROUPS: str = "Missing {sequence_type} functional groups sequence! Multi-frame image parsing is not possible."
@@ -27,8 +26,7 @@ EMPTY_SHARED_FUNCTIONAL_GROUPS: str = "Shared functional groups sequence is empt
 
 #: Missing stack ID in frame functional groups information.
 MISSING_STACK_ID: str = (
-    "Failed to read stack IDs for a multi-frame encoded image."
-)
+    "Failed to read stack IDs for a multi-frame encoded image.")
 
 #: Message to display if plane position could not be read.
 MISSING_PLANE_POSITION: str = "Plane position header information could not be determined for multi-frame image."
@@ -42,13 +40,11 @@ MISSING_IMAGE_POSITION: str = "Image position header information could not be de
 #: Message to display of the image shape could not be determined, causing a
 #: pixel array read failure.
 MISSING_IMAGE_SHAPE: str = (
-    "Missing image shape! Failed to parse multi-frame array pixel array."
-)
+    "Missing image shape! Failed to parse multi-frame array pixel array.")
 
 #: Message to display if a multi-frame image's frame has no content sequence.
 MISSING_CONTENT_SEQUENCE: str = (
-    "Missing content sequence! Failed to parse multi-frame array pixel array."
-)
+    "Missing content sequence! Failed to parse multi-frame array pixel array.")
 
 #: Message to display if the image orientation (patient) header information
 #: is missing.
@@ -60,20 +56,17 @@ MISSING_PIXEL_MEASURES: str = "Missing pixel measures sequence! Voxel sizes coul
 
 #: Message to display if pixel spacing could not be read from pixel measures.
 MISSING_PIXEL_SPACING: str = (
-    "Pixel spacing could not be read from multi-frame image pixel measures!"
-)
+    "Pixel spacing could not be read from multi-frame image pixel measures!")
 
 #: Message to display for a missing pixel value transformations sequence.
 MISSING_TRANSFORMATIONS: str = "Missing pixel value transformations sequence! Failed to parse multi-frame pixel array."
 
 #: Message to display if slice thickness could not be read from pixel measures.
 MISSING_SLICE_THICKNESS: str = (
-    "Slice thickness could not be read multi-frame image pixel measures!"
-)
+    "Slice thickness could not be read multi-frame image pixel measures!")
 
 #: NotImplementedError message to display for multi stack multi-frames.
 MULTIPLE_STACK_IDS: str = (
-    "Multi-frame parsing for multipls stack IDs is not implemented."
-)
+    "Multi-frame parsing for multipls stack IDs is not implemented.")
 #: Message to display for calculated frame/shape mismatch.
 SHAPE_MISMATCH: str = "Calculated data shape does not match the number of frame!\nNumber of volumes:\t{n_volumes}\nCalculated number of frames:\t{n_calculated}\nNumber of frame according to the header: {n_frames}"

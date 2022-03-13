@@ -8,8 +8,7 @@ BAD_FILE_INPUT = "Raw input to header class my be either a pydicom FileDataset i
 
 #: Message displayed when a data element has an invalid VR.
 INVALID_VR = (
-    "{key} is not a valid DICOM data element value representation (VR)!"
-)
+    "{key} is not a valid DICOM data element value representation (VR)!")
 
 #: Message to show if python-magic is not installed.
 MUGGLES = """To generate files by mime type, python-magic must be installed.

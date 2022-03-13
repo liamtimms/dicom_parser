@@ -38,9 +38,9 @@ def check_magic() -> None:
         raise ImportError(MUGGLES)
 
 
-def generate_by_mime(
-    root_path: Path, pattern: str = "*", mime_type: str = DICOM_MIME_TYPE
-) -> Generator:
+def generate_by_mime(root_path: Path,
+                     pattern: str = "*",
+                     mime_type: str = DICOM_MIME_TYPE) -> Generator:
     """
     Wrapper around the :func:`_generate_by_mime` generator function.
 
@@ -67,9 +67,9 @@ def generate_by_mime(
     return _generate_by_mime(root_path, pattern, mime_type)
 
 
-def _generate_by_mime(
-    root_path: Path, pattern: str = "*", mime_type: str = DICOM_MIME_TYPE
-) -> Generator:
+def _generate_by_mime(root_path: Path,
+                      pattern: str = "*",
+                      mime_type: str = DICOM_MIME_TYPE) -> Generator:
     """
     Yields files with the provided *mime_type*.
 

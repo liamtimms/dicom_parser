@@ -6,9 +6,9 @@ from unittest import TestCase
 
 import numpy as np
 import pydicom
+
 from dicom_parser.data_element import DataElement
 from dicom_parser.header import Header
-
 from tests.data_elements.fixtures import VR_TO_VALUES
 from tests.fixtures import TEST_IMAGE_PATH
 
@@ -25,9 +25,8 @@ class DataElementTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.raw_header = pydicom.dcmread(
-            cls.TEST_IMAGE, stop_before_pixels=True
-        )
+        cls.raw_header = pydicom.dcmread(cls.TEST_IMAGE,
+                                         stop_before_pixels=True)
         cls.header = Header(cls.TEST_IMAGE)
 
     def setUp(self):
@@ -35,8 +34,8 @@ class DataElementTestCase(TestCase):
             self.raw_element = self.raw_header.data_element(self.SAMPLE_KEY)
 
     def get_raw_element(
-        self, key: Union[str, Tuple[int, int]]
-    ) -> pydicom.dataelem.DataElement:
+            self, key: Union[str, Tuple[int,
+                                        int]]) -> pydicom.dataelem.DataElement:
         return self.raw_header.data_element(key)
 
     def get_values(self) -> dict:

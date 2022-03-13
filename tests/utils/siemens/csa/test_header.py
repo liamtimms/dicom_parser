@@ -1,15 +1,16 @@
 from unittest import TestCase
 
 import pydicom
+
 from dicom_parser.utils.siemens.csa.header import CsaHeader
 from dicom_parser.utils.siemens.private_tags import SIEMENS_PRIVATE_TAGS
 from tests.fixtures import TEST_SIEMENS_DWI_PATH
-
 
 TEST_DWI_HEADER_SIZE: int = 12964
 
 
 class CsaHeaderTestCase(TestCase):
+
     @classmethod
     def setUpClass(cls):
         dcm = pydicom.dcmread(TEST_SIEMENS_DWI_PATH)

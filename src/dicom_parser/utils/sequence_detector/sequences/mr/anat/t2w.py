@@ -5,13 +5,16 @@ T2W_RULES_1 = [
         "lookup": "exact",
     },
     {
-        "key": "SequenceVariant",
+        "key":
+        "SequenceVariant",
         "value": [
             ("Segmented k-Space", "Spoiled"),
             ("Segmented k-Space", "Spoiled", "Oversampling Phase"),
         ],
-        "lookup": "exact",
-        "operator": "any",
+        "lookup":
+        "exact",
+        "operator":
+        "any",
     },
 ]
 T2W_RULES_2 = [
