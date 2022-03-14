@@ -6,7 +6,6 @@ import array
 from typing import Tuple, Union
 
 import numpy as np
-
 from dicom_parser.utils.siemens import messages
 from dicom_parser.utils.siemens.csa.header import CsaHeader
 
@@ -288,4 +287,8 @@ SIEMENS_PRIVATE_TAGS = {
     "B_matrix": ("0019", "1027"),
     "BandwidthPerPixelPhaseEncode": ("0019", "1028"),
     "MosaicRefAcqTimes": ("0019", "1029"),
+    # Other Misc.
+    "SliceResolution": ("0019", "1017"),
+    "TimeOfAcquisition": ("0051", "100a"),
+    "Field of View": ("0051", "100c"),
 }
