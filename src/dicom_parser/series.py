@@ -150,6 +150,11 @@ class Series:
         # Use peek to convert dcm_paths to None if the generator is "empty"
         _, dcm_paths = peek(dcm_paths)
         if not dcm_paths:
+            dcm_paths = (generate_by_mime(self.path)
+                         if mime else self.path.rglob("*.IMA"))
+            # Use peek to convert dcm_paths to None if the generator is "empty"
+            _, dcm_paths = peek(dcm_paths)
+        if not dcm_paths:
             raise FileNotFoundError(EMPTY_SERIES_DIRECTORY)
         return dcm_paths
 
